@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DAY2
 {
@@ -22,6 +23,7 @@ namespace DAY2
                     Problem4();
                     break;
                 case 5:
+                    Problem5();
                     break;
                 case 6:
                     break;
@@ -89,10 +91,13 @@ namespace DAY2
             int yOfEvill = int.Parse(ArrTemp[1]);
             Console.WriteLine("");
             int sum = 0;
-            xOfIvo--;
-            yOfIvo++;
-            xOfEvill--;
-            yOfEvill--;
+            while ((xOfIvo < 0) || (yOfEvill < 0) || (xOfEvill < 0) || (yOfIvo < 0))
+            {
+                xOfIvo--;
+                yOfIvo++;
+                xOfEvill--;
+                yOfEvill--;
+            }
             do
             {
                 if (yOfIvo != yOfEvill) sum = sum + (max * xOfIvo + yOfIvo);
@@ -100,7 +105,6 @@ namespace DAY2
                 yOfIvo++;
                 xOfEvill--;
                 yOfEvill--;
-
             }
             while ( xOfIvo >= 0 );
             Console.WriteLine(sum);
@@ -121,6 +125,10 @@ namespace DAY2
                 }
             }
             while (temp != "Output") ;
+        }
+        static void Problem5()
+        {
+
         }
     }
 }
