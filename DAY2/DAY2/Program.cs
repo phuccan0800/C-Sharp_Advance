@@ -114,7 +114,11 @@ namespace DAY2
             {
                 string[] ArrTemp = new string[4];
                 ArrTemp = temp.Split(' ');
-                if (ArrTemp.Length == 4) patients[i] = new(ArrTemp[0], $"{ArrTemp[1]} {ArrTemp[2]}", ArrTemp[3]);
+                if (ArrTemp.Length == 4)
+                {
+                    patients[i] = new(ArrTemp[0], $"{ArrTemp[1]} {ArrTemp[2]}", ArrTemp[3]);
+                    i++;
+                }
             }
             while (temp != "Output") ;
         }

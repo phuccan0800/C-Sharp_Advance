@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace DAY2
 {
-    internal class Class1
+    internal class Patients
     {
+        string Department;
+        string Doctor;
+        string Patient;
+        public Patients() { }
+
+        public Patients(string department, string doctor, string patient)
+        {
+            Department = department;
+            Doctor = doctor;
+            Patient = patient;
+        }
     }
+
 }
