@@ -98,15 +98,33 @@ namespace DAY2
                 xOfEvill--;
                 yOfEvill--;
             }
+            int cutx = -1;
+            int cuty = -1;
+            int xTempOfIvo = xOfIvo;
+            int yTempOfIvo = yOfIvo;
+            for (int i = yOfIvo; i <= max; i++)
+            {
+                int xTempOfEvill = xOfEvill;
+                int yTempOfEvill = yOfEvill;
+                for (int j = yOfEvill; j > 0; j--)
+                {
+                    Console.WriteLine($"{xTempOfIvo} vs {xTempOfEvill} ; {yTempOfIvo} vs {yTempOfEvill}");
+                    if (xTempOfIvo == xTempOfEvill && yTempOfIvo == yTempOfEvill) { cutx = xTempOfIvo; cuty = yTempOfIvo; break; }
+                    xTempOfEvill--;
+                    yTempOfEvill--;
+                }
+                xTempOfIvo--;
+                yTempOfIvo++;
+            }
             do
             {
-                if (yOfIvo != yOfEvill) sum = sum + (max * xOfIvo + yOfIvo);
+                if (xOfIvo != cutx && yOfIvo != cuty) sum = sum + (max * xOfIvo + yOfIvo);
                 xOfIvo--;
                 yOfIvo++;
-                xOfEvill--;
-                yOfEvill--;
             }
-            while ( xOfIvo >= 0 );
+            while (xOfIvo >= 0 && yOfIvo < max);
+
+            Console.WriteLine($"{cutx} - {cuty}");
             Console.WriteLine(sum);
         }
         static void Problem4()
@@ -128,7 +146,132 @@ namespace DAY2
         }
         static void Problem5()
         {
+            int Value = int.Parse(Console.ReadLine());
+            string temp = Console.ReadLine() ;
+            string[] ArrTemp = new string[temp.Length];
+            ArrTemp = temp.Split(' ');
+            List<TypeAndAmount> TypeAndAmounts = new List<TypeAndAmount>();
+            List<ItemsAndAmount> ItemsAndAmounts = new List<ItemsAndAmount>();
+            TypeAndAmount tempType = new TypeAndAmount("Gold", 0);
+            TypeAndAmounts.Add(tempType);
+            tempType = new TypeAndAmount("Gem", 0);
+            TypeAndAmounts.Add(tempType);
+            tempType = new TypeAndAmount("Cash", 0);
+            TypeAndAmounts.Add(tempType);
+            int i = 0;
+            while (i < ArrTemp.Length)
+            {
+                if (ArrTemp[i] == "Gold")
+                {
+                    ItemsAndAmount tempItem = new ItemsAndAmount("Gold", ArrTemp[i], int.Parse(ArrTemp[i + 1]));
+                    ItemsAndAmounts.Add(tempItem);
+                    TypeAndAmounts[0].PlusAmount(int.Parse(ArrTemp[i + 1]));
+                }
+                else if (ArrTemp[i].Contains("gem") || ArrTemp[i].Contains("gem"))
+                {
+                    ItemsAndAmount tempItem = new ItemsAndAmount("Gem", ArrTemp[i], int.Parse(ArrTemp[i + 1]));
+                    ItemsAndAmounts.Add(tempItem);
+                    TypeAndAmounts[1].PlusAmount(int.Parse(ArrTemp[i + 1]));
+                }
+                else if (!ArrTemp[i].Contains("Gem"))
+                {
+                    ItemsAndAmount tempItem = new ItemsAndAmount("Cash", ArrTemp[i], int.Parse(ArrTemp[i + 1]));
+                    ItemsAndAmounts.Add(tempItem);
+                    TypeAndAmounts[2].PlusAmount(int.Parse(ArrTemp[i + 1]));
+                }
+                i = i + 2;
+            }
+            if (TypeAndAmounts[0].GetAmount() < Value)
+            {
+                Console.WriteLine($"<Gold> ${TypeAndAmounts[0].GetAmount()}");
+                Value = Value - TypeAndAmounts[0].GetAmount();
+                Console.WriteLine($"##Gold - {TypeAndAmounts[0].GetAmount()}");
+            }
+            else if (TypeAndAmounts[0].GetAmount() >= Value)
+            {
+                Console.WriteLine($"<Gold> ${Value}");
+                Console.WriteLine($"##Gold - {Value}");
+                Value = 0;
+            } 
+            for (i = 0; i < ItemsAndAmounts.Count-1; i++)
+                for (int j = i+ 1; j < ItemsAndAmounts.Count; j++)
+                    if (ItemsAndAmounts[i].GetItem().CompareTo(ItemsAndAmounts[j].GetItem()) < 0)
+                    {
+                        ItemsAndAmount tempItem = ItemsAndAmounts[i];
+                        ItemsAndAmounts[i] = ItemsAndAmounts[j];
+                        ItemsAndAmounts[j] = tempItem;
+                    }
+            if (Value > 0)
+            {
+                int tempValue = Value - TypeAndAmounts[1].GetAmount();
+                if (tempValue > 0 && TypeAndAmounts[1].GetAmount()>0)
+                {
+                    Console.WriteLine($"<Gem> - {TypeAndAmounts[1].GetAmount()}");
+                    for (i = 0; i < ItemsAndAmounts.Count; i++)
+                    {
+                        if (Value > tempValue
+                            && (ItemsAndAmounts[i].GetTypeName().Contains("gem") ||
+                            ItemsAndAmounts[i].GetTypeName().Contains("Gem"))
+                            && (ItemsAndAmounts[i].GetAmount() > 0))
+                        {
+                            Value = Value - ItemsAndAmounts[i].GetAmount();
+                            Console.WriteLine($"##{ItemsAndAmounts[i].GetItem()} - {ItemsAndAmounts[i].GetAmount()}");
+                        }
+                    }
+                }
+                else if (tempValue <= 0 && TypeAndAmounts[1].GetAmount() >0)
+                {
+                    Console.WriteLine($"<Gem> - {Value}");
+                    for (i = 0; i < ItemsAndAmounts.Count; i++)
+                    {
+                        if (Value > tempValue
+                            && 
+                            ItemsAndAmounts[i].GetTypeName().Contains("Gem")
+                            && (ItemsAndAmounts[i].GetAmount() > 0))
+                        {
+                            Value = Value - ItemsAndAmounts[i].GetAmount();
+                            if (Value < 0) { Console.WriteLine($"##{ItemsAndAmounts[i].GetItem()} - {ItemsAndAmounts[i].GetAmount() + Value}"); break; }
 
+                            else if  (Value > 0) Console.WriteLine($"##{ItemsAndAmounts[i].GetItem()} - {ItemsAndAmounts[i].GetAmount()}");
+                        }
+                    }
+                }
+            }
+            if (Value > 0 && TypeAndAmounts[2].GetAmount()>0)
+            {
+                int tempValue = Value - TypeAndAmounts[2].GetAmount();
+                if (tempValue > 0)
+                {
+                    Console.WriteLine($"<Cash> - {TypeAndAmounts[2].GetAmount()}");
+                    for (i = 0; i < ItemsAndAmounts.Count; i++)
+                    {
+                        if (Value > tempValue
+                            && ItemsAndAmounts[i].GetTypeName().Contains("Cash")
+                            && (ItemsAndAmounts[i].GetAmount() > 0))
+                        {
+                            Value = Value - ItemsAndAmounts[i].GetAmount();
+                            Console.WriteLine($"##{ItemsAndAmounts[i].GetItem()} - {ItemsAndAmounts[i].GetAmount()}");
+                        }
+                    }
+                }
+                else if (tempValue <= 0 && TypeAndAmounts[2].GetAmount() > 0)
+                {
+                    Console.WriteLine($"<Cash> - {Value}");
+                    for (i = 0; i < ItemsAndAmounts.Count; i++)
+                    {
+                        if (Value > tempValue
+                            && (ItemsAndAmounts[i].GetTypeName().Contains("Cash") ||
+                            ItemsAndAmounts[i].GetTypeName().Contains("cash"))
+                            && (ItemsAndAmounts[i].GetAmount() > 0))
+                        {
+                            Value = Value - ItemsAndAmounts[i].GetAmount();
+                            if (Value < 0) { Console.WriteLine($"##{ItemsAndAmounts[i].GetItem()} - {ItemsAndAmounts[i].GetAmount() + Value}"); break; }
+
+                            else if (Value > 0) Console.WriteLine($"##{ItemsAndAmounts[i].GetItem()} - {ItemsAndAmounts[i].GetAmount()}");
+                        }
+                    }
+                }
+            }
         }
     }
 }
