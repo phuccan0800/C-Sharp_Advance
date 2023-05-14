@@ -76,5 +76,23 @@ namespace DAY2
         {
             return this.Model;
         }
+        public void checkCar(string check)
+        {
+            if (check.Equals(this.CargoTypeGet()))
+            {
+                switch (check)
+                {
+                    case "fragile":
+                        if ((this.Tire1Pressure < 1)
+                            || (this.Tire2Pressure < 1)
+                            || (this.Tire3Pressure < 1)
+                            || (this.Tire4Pressure < 1)) Console.WriteLine(this.ToString());
+                        break;
+                    case "flamable":
+                        if (this.EnginePower > 250) Console.WriteLine(this.ToString());
+                        break;
+                }
+            }
+        }
     }
 }
