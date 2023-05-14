@@ -46,12 +46,39 @@ namespace DAY2
 
         public string ToString(Engine engine)
         {
-            return $"{this.Model}: \n  " +
-                       $"{engine.ModelGet()}: \n    "+
-                       $"Displacement: {engine.PowerGet()}\n    "+
-                       $"Efficiency: {engine.EfficiencyGet()}\n  "+
-                       $"Weight: {this.Weight}\n  "+
+            string OutPut;
+            if (this.Weight >0 ) OutPut = $"{this.Model}: \n  " +
+                       $"{engine.ModelGet()}: \n    " +
+                       $"Power: {engine.PowerGet()}\n    " +
+                       $"Displacement: {engine.DisplacamentGet()}\n    " +
+                       $"Efficiency: {engine.EfficiencyGet()}\n  " +
+                       $"Weight: {this.Weight}\n  " +
                        $"Color: {this.Color}";
+            else OutPut = $"{this.Model}: \n  " +
+                       $"{engine.ModelGet()}: \n    " +
+                       $"Power: {engine.PowerGet()}\n    " +
+                       $"Displacement: {engine.DisplacamentGet()}\n    " +
+                       $"Efficiency: {engine.EfficiencyGet()}\n  " +
+                       $"Weight: n/a\n  " +
+                       $"Color: {this.Color}";
+            return OutPut;
+        }
+        public Car2 Add(string temp)
+        {
+            Car2 car = new Car2();
+            string[] temp2 = new string[100];
+            for (int j = 0; j < 4; j++) temp2[j] = null;
+            temp2 = temp.Split(' ');
+            if (temp2.Length > 2)
+            {
+                int number;
+                bool isTrue = int.TryParse(temp2[2], out number);
+                if (isTrue && temp2.Length == 3) car = new Car2(temp2[0], temp2[1], int.Parse(temp2[2]));
+                else if (isTrue && temp2.Length > 3) car = new Car2(temp2[0], temp2[1], int.Parse(temp2[2]), temp2[3]);
+                else if (isTrue == false && temp2.Length == 3) car = new Car2(temp2[0], temp2[1], temp2[2]);
+            }
+            else if (temp2.Length == 2) car = new Car2(temp2[0], temp2[1]);
+            return car;
         }
     }
     internal class Engine
@@ -91,11 +118,29 @@ namespace DAY2
         }
         public string ModelGet() { return Model; }
         public int PowerGet() { return Power; }
+        public int DisplacamentGet() { return Displacament; }
         public string EfficiencyGet() { return Efficiency; }
 
         public override string ToString()
         {
             return $"{this.Model} {this.Power} {this.Displacament} {this.Efficiency} ";
+        }
+        public Engine Add(string temp)
+        {
+            Engine engine = new Engine();
+            string[] temp2 = new string[4];
+            for (int j = 0; j < 4; j++) temp2[j] = null;
+            temp2 = temp.Split(' ');
+            if (temp2.Length > 2)
+            {
+                int number;
+                bool isTrue = int.TryParse(temp2[2], out number);
+                if (isTrue && temp2.Length == 3) engine = new Engine(temp2[0], int.Parse(temp2[1]), int.Parse(temp2[2]));
+                else if (isTrue && temp2.Length > 3) engine = new Engine(temp2[0], int.Parse(temp2[1]), int.Parse(temp2[2]), temp2[3]);
+                else if (isTrue == false && temp2.Length == 3) engine = new Engine(temp2[0], int.Parse(temp2[1]), temp2[2]);
+            }
+            else if (temp2.Length == 2) engine = new Engine(temp2[0], int.Parse(temp2[1]));
+            return engine;
         }
     }
 

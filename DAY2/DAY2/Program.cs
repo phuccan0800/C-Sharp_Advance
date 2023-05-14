@@ -16,8 +16,10 @@ namespace DAY2
                     Problem2();
                     break;
                 case 3:
+                    Problem3();
                     break;
                 case 4:
+                    Problem4();
                     break;
                 case 5:
                     break;
@@ -36,71 +38,29 @@ namespace DAY2
                 string temp = Console.ReadLine();
                 string[] temp2 = new string[100];
                 temp2 = temp.Split(' ');
-                Car[i] = new Car(
-                    temp2[0],
-                    int.Parse(temp2[1]),
-                    int.Parse(temp2[2]),
-                    double.Parse(temp2[3]),
-                    temp2[4],
-                    double.Parse(temp2[5]),
-                    int.Parse(temp2[6]),
-                    double.Parse(temp2[7]),
-                    int.Parse(temp2[8]),
-                    double.Parse(temp2[9]),
-                    int.Parse(temp2[10]),
-                    double.Parse(temp2[11]),
-                    int.Parse(temp2[12]));
+                Car[i] = new Car().Add(temp);
             }
             string check = Console.ReadLine();
             for (int i = 0; i < n; i++) Car[i].checkCar(check);
         }
         static void Problem2()
         {
+            Console.WriteLine("Input Number Of Engine: ");
             int m = int.Parse(Console.ReadLine());
             Engine[] Engines = new Engine[m];
             for (int i = 0; i < m; i++)
             {
                 string temp = Console.ReadLine();
-                string[] temp2 = new string[4];
-                for (int j = 0; j < 4; j++) temp2[j] = null;
-                temp2 = temp.Split(' ');
-                if (temp2[2] != null)
-                {
-                    int number;
-                    bool isTrue = int.TryParse(temp2[2], out number);
-                    try
-                    {
-                        if (isTrue && temp2[3] == null) Engines[i] = new Engine(temp2[0], int.Parse(temp2[1]), int.Parse(temp2[2]));
-                        else if (isTrue && temp2[3] != null) Engines[i] = new Engine(temp2[0], int.Parse(temp2[1]), int.Parse(temp2[2]), temp2[3]);
-                        else if (isTrue == false && temp2[3] != null) Engines[i] = new Engine(temp2[0], int.Parse(temp2[1]), temp2[2]);
-                    } catch (IndexOutOfRangeException e) 
-                    {
-                        Engines[i] = new Engine(temp2[0], int.Parse(temp2[1]), int.Parse(temp2[2]));
-                    }
-                   
-                }
-                else if (temp2[2] == null) Engines[i] = new Engine(temp2[0], int.Parse(temp2[1]));
-                Console.WriteLine($"{i} {m} ");
-                Console.WriteLine(Engines[i].ToString());
+                Engines[i] = new Engine().Add(temp);
             }
-            Console.WriteLine(" Input Number Of Car: ");
+            
+            Console.WriteLine("Input Number Of Car: ");
             int n = int.Parse(Console.ReadLine());
             Car2[] Car = new Car2[n];
             for (int i = 0; i < n; i++)
             {
                 string temp = Console.ReadLine();
-                string[] temp2 = new string[100];
-                for (int j = 0; j<4; j++) temp2[j] = null;
-                temp2 = temp.Split(' ');
-                if (temp2.Length >2)
-                {
-                    int number;
-                    bool isTrue = int.TryParse(temp2[2], out number);
-                    if (isTrue && temp2[3] == null) Car[i] = new Car2(temp2[0], temp2[1], int.Parse(temp2[2]));
-                    else if (isTrue && temp2[3] != null) Car[i] = new Car2(temp2[0], temp2[1], int.Parse(temp2[2]), temp2[3]);
-                    else if (isTrue == false && temp2[3]!=null) Car[i] =  new Car2(temp2[0], temp2[1], temp2[2]);
-                }
-                else if (temp2.Length = 2) Car[i] = new Car2(temp2[0], temp2[1]);
+                Car[i] = new Car2().Add(temp);
             }
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < m; j++)
@@ -111,6 +71,52 @@ namespace DAY2
                         break;
                     }
                 }
+        }
+        static void Problem3()
+        {
+            string temp = Console.ReadLine();
+            string[] ArrTemp = new string[2];
+            ArrTemp = temp.Split(' ');
+            int min = int.Parse(ArrTemp[0]);
+            int max = int.Parse(ArrTemp[1]);
+            temp = Console.ReadLine();
+            ArrTemp = temp.Split(' ');
+            int xOfIvo = int.Parse(ArrTemp[0]);
+            int yOfIvo = int.Parse(ArrTemp[1]);
+            temp = Console.ReadLine();
+            ArrTemp = temp.Split(' ');
+            int xOfEvill = int.Parse(ArrTemp[0]);
+            int yOfEvill = int.Parse(ArrTemp[1]);
+            Console.WriteLine("");
+            int sum = 0;
+            xOfIvo--;
+            yOfIvo++;
+            xOfEvill--;
+            yOfEvill--;
+            do
+            {
+                if (yOfIvo != yOfEvill) sum = sum + (max * xOfIvo + yOfIvo);
+                xOfIvo--;
+                yOfIvo++;
+                xOfEvill--;
+                yOfEvill--;
+
+            }
+            while ( xOfIvo >= 0 );
+            Console.WriteLine(sum);
+        }
+        static void Problem4()
+        {
+            Patients[] patients = new Patients[100];
+            string temp = Console.ReadLine();
+            int i = 0;
+            do
+            {
+                string[] ArrTemp = new string[4];
+                ArrTemp = temp.Split(' ');
+                if (ArrTemp.Length == 4) patients[i] = new(ArrTemp[0], $"{ArrTemp[1]} {ArrTemp[2]}", ArrTemp[3]);
+            }
+            while (temp != "Output") ;
         }
     }
 }

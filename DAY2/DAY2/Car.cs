@@ -94,5 +94,26 @@ namespace DAY2
                 }
             }
         }
+        public Car Add(string temp)
+        {
+            Car car = new Car();
+            string[] temp2 = new string[100];
+            temp2 = temp.Split(' ');
+            car = new Car(
+                temp2[0],
+                int.Parse(temp2[1]),
+                int.Parse(temp2[2]),
+                double.Parse(temp2[3]),
+                temp2[4],
+                double.Parse(temp2[5]),
+                int.Parse(temp2[6]),
+                double.Parse(temp2[7]),
+                int.Parse(temp2[8]),
+                double.Parse(temp2[9]),
+                int.Parse(temp2[10]),
+                double.Parse(temp2[11]),
+                int.Parse(temp2[12]));
+        return car;
+        }
     }
 }
